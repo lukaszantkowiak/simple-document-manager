@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.View.OnClickListener
 import android.view.{View, Menu, MenuItem}
-import pl.lantkowiak.simple_document_manager.R
+import pl.lantkowiak.sdm.R
 
 class MainActivity extends AppCompatActivity {
   override def onCreate(savedInstanceState: Bundle) {
@@ -18,9 +18,10 @@ class MainActivity extends AppCompatActivity {
     val fab = findViewById(R.id.fab).asInstanceOf[FloatingActionButton]
     val clickListener = new OnClickListener {
       override def onClick(view: View): Unit = {
-        Snackbar.make(view, "Replace with your own action.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+        Snackbar.make(view, "Replace with your own action.", Snackbar.LENGTH_LONG).setAction("Action", null).show()
       }
     }
+
     fab.setOnClickListener(clickListener)
   }
 
