@@ -1,13 +1,10 @@
 package pl.lantkowiak.sdm
 
-import org.assertj.core.api.Assertions.assertThat
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.scalatest.junit.{AssertionsForJUnit, JUnitRunner}
+import org.scalatest.{Matchers, FlatSpec}
 
-@RunWith(classOf[JUnitRunner])
-class ExampleScalaUnitTest {
-  @Test def addition_isCorrect(): Unit = {
-    assertThat(2 + 2).isEqualTo(4);
+class ExampleScalaUnitTest extends FlatSpec with Matchers {
+
+  "addition" should "be correct" in {
+    2 + 2 should be(4)
   }
 }

@@ -2,11 +2,12 @@ package pl.lantkowiak.sdm;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
+
 
 public class ExampleJavaUnitTest {
     @Test
     public void addition_isCorrect() throws Exception {
-        assertThat(2 + 2).isEqualTo(4);
+        assertEquals(4, 2 + 2);
     }
 }

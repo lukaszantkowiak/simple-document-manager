@@ -1,11 +1,11 @@
-package pl.lantkowiak.sdm
+package pl.lantkowiak.sdm.activities
 
 import android.os.Bundle
-import android.support.design.widget.{Snackbar, FloatingActionButton}
+import android.support.design.widget.{FloatingActionButton, Snackbar}
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.View.OnClickListener
-import android.view.{View, Menu, MenuItem}
+import android.view.{Menu, MenuItem, View}
 import pl.lantkowiak.sdm.R
 
 class MainActivity extends AppCompatActivity {
@@ -18,7 +18,8 @@ class MainActivity extends AppCompatActivity {
     val fab = findViewById(R.id.fab).asInstanceOf[FloatingActionButton]
     val clickListener = new OnClickListener {
       override def onClick(view: View): Unit = {
-        Snackbar.make(view, "Replace with your own action.", Snackbar.LENGTH_LONG).setAction("Action", null).show()
+        Snackbar.make(view, "Replace with your own action!", Snackbar.LENGTH_LONG).setAction("Action", null).show()
+
       }
     }
 
