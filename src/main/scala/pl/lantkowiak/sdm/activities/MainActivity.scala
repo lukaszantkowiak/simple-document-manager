@@ -1,3 +1,4 @@
+[
 package pl.lantkowiak.sdm.activities
 
 import android.os.Bundle
@@ -35,8 +36,8 @@ class MainActivity extends AppCompatActivity {
   override def onOptionsItemSelected(item: MenuItem): Boolean = {
     val id = item.getItemId()
 
-    if (id == R.id.action_settings) {
-      return true
+    id match {
+      case R.id.action_settings => return true;
     }
 
     super.onOptionsItemSelected(item)
