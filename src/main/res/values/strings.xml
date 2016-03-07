@@ -1,4 +1,12 @@
 <resources>
-    <string name="app_name">simple-document-manager</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name">Simple Document Manager</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- Right menu -->
+    <string name="left_menu_recent_documents">Main view</string>
+    <string name="left_menu_search">Search</string>
+    <string name="left_menu_settings">Settings</string>
+    <string name="left_menu_google_drive">Google Drive</string>
 </resources>

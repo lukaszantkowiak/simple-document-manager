@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/left_menu_recent_documents"
+            android:icon="@android:drawable/ic_dialog_map"
+            android:title="@string/left_menu_recent_documents" />
+        <item
+            android:id="@+id/left_menu_search"
+            android:icon="@android:drawable/ic_dialog_map"
+            android:title="@string/left_menu_search" />
+        <item
+            android:id="@+id/left_menu_settings"
+            android:icon="@android:drawable/ic_dialog_map"
+            android:title="@string/left_menu_settings" />
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/left_menu_google_drive"
+            android:icon="@android:drawable/ic_dialog_map"
+            android:title="@string/left_menu_google_drive" />
+    </group>
+</menu>
