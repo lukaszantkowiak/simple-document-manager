@@ -12,8 +12,133 @@
     tools:context=".activities.ViewRecentDocumentsActivity"
     tools:showIn="@layout/activity_recent_documents">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/search"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"
+                android:text="TAGS"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <FrameLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true">
+
+                    <EditText
+                        android:id="@+id/main_search_tags"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:singleLine="true"
+                        android:textSize="12sp" />
+
+                    <Button
+                        android:id="@+id/main_clear_search_tags"
+                        android:layout_width="15sp"
+                        android:layout_height="15sp"
+                        android:layout_gravity="end|center_vertical"
+                        android:layout_marginEnd="5sp"
+                        android:layout_marginRight="5sp"
+                        android:background="@android:drawable/ic_delete"
+                        android:visibility="invisible" />
+
+                </FrameLayout>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/button"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="80dp"
+                android:layout_height="35sp"
+                android:layout_weight="0.1"
+                android:onClick="loadDocuments"
+                android:text="SEARCH"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal">
+
+            <LinearLayout
+                android:id="@+id/main_last_documents"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <!-- one item -->
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white_pressed"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp" >
+                    <TextView
+                        android:id="@+id/search2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.1"
+                        android:text="Sample title"
+                        android:textAppearance="?android:attr/textAppearanceLarge" />
+                    <TextView
+                        android:id="@+id/search3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.1"
+                        android:text="tags dsa fewf fweew fdsds fdsd"
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                </LinearLayout>
+
+                <!-- one item -->
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white_pressed"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp" >
+                    <TextView
+                        android:id="@+id/search22"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.1"
+                        android:text="Sample title"
+                        android:textAppearance="?android:attr/textAppearanceLarge" />
+                    <TextView
+                        android:id="@+id/search32"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.1"
+                        android:text="tags dsa fewf fweew fdsds fdsd"
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
 </RelativeLayout>

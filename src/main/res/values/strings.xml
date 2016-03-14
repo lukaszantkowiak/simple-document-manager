@@ -4,9 +4,13 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <!-- Right menu -->
+    <!-- Left menu -->
     <string name="left_menu_recent_documents">Main view</string>
     <string name="left_menu_search">Search</string>
     <string name="left_menu_settings">Settings</string>
     <string name="left_menu_google_drive">Google Drive</string>
+
+    <!-- Add document -->
+    <string name="add_document_tags">Tags (separated by space):</string>
+    <string name="add_document_title">Title:</string>
 </resources>
