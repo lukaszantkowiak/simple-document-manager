@@ -1,4 +1,4 @@
-package pl.lantkowiak.sdm.core.db
+package pl.lantkowiak.sdm.core.dao.db
 
 /**
  * @author Lukasz Antkowiak lukasz.patryk.antkowiak@gmail.com

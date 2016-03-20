@@ -11,7 +11,7 @@ import android.view.MenuItem
 import pl.lantkowiak.sdm.R
 
 /**
- * Base class for each activity which has DrawerMenu
+ * Base class for each activity with DrawerMenu
  *
  * @author Lukasz Antkowiak lukasz.patryk.antkowiak@gmail.com
  */

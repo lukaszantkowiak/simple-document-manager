@@ -10,7 +10,12 @@
     <string name="left_menu_settings">Settings</string>
     <string name="left_menu_google_drive">Google Drive</string>
 
+    <!-- View recent documents -->
+    <string name="recent_documents_tags">Tags</string>
+    <string name="recent_documents_find_button">Find</string>
+
     <!-- Add document -->
     <string name="add_document_tags">Tags (separated by space):</string>
     <string name="add_document_title">Title:</string>
+    <string name="add_document_add_button">Add</string>
 </resources>

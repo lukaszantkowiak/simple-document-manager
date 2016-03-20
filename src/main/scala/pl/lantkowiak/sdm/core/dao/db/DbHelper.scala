@@ -1,4 +1,4 @@
-package pl.lantkowiak.sdm.core.db
+package pl.lantkowiak.sdm.core.dao.db
 
 import android.content.Context
 import android.database.sqlite.{SQLiteDatabase, SQLiteOpenHelper}
