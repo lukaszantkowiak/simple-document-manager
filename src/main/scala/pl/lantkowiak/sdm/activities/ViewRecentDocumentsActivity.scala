@@ -8,10 +8,12 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.widget.{EditText, LinearLayout, TextView}
 import pl.lantkowiak.sdm.R
-import pl.lantkowiak.sdm.core.dao.DocumentDao
-import pl.lantkowiak.sdm.core.entity.Tag
+import pl.lantkowiak.sdm.core.dao.{DocumentTagDao, TagDao, DocumentDao}
+import pl.lantkowiak.sdm.core.entity.{Document, Tag}
 import pl.lantkowiak.sdm.di.ApplicationModule.wire
 import pl.lantkowiak.sdm.gui.DocumentItemCreator
+
+import scala.collection.mutable.ListBuffer
 
 /**
  *
@@ -19,6 +21,8 @@ import pl.lantkowiak.sdm.gui.DocumentItemCreator
  */
 class ViewRecentDocumentsActivity extends DrawerMenuActivity {
   private lazy val documentDao = wire(classOf[DocumentDao])
+  private lazy val tagDao = wire(classOf[TagDao])
+  private lazy val documentTagDao = wire(classOf[DocumentTagDao])
 
   private lazy val documentItemCreator = wire(classOf[DocumentItemCreator])
 
@@ -40,7 +44,7 @@ class ViewRecentDocumentsActivity extends DrawerMenuActivity {
 
     val tags = findViewById(R.id.recent_documents_search_tags).asInstanceOf[TextView].getText.toString
 
-    val documents = if (tags.isEmpty) documentDao.getRecentDocuments else documentDao.getDocumentsByTags(tags.split(" "))
+    val documents = if (tags.isEmpty) documentDao.getAllDocuments else getDocumentsByTags(tags.split(" ").toList)
 
     for (document <- documents) {
       val documentItemView = documentItemCreator.create(document.title, joinTags(document.tags))
@@ -54,6 +58,16 @@ class ViewRecentDocumentsActivity extends DrawerMenuActivity {
 
       lastDocuments.addView(documentItemView)
     }
+  }
+
+  def getDocumentsByTags(tagNames: List[String]): List[Document] = {
+    val tags = tagDao.getTagsByNames(tagNames)
+    val documentIds: ListBuffer[Integer] = new ListBuffer[Integer]
+    for (documentTag <- documentTagDao.getDocumentIdsByTagIds(tags)) {
+      documentIds.append(documentTag.document.id)
+    }
+
+    documentDao.getDocumentsByIds(documentIds)
   }
 
   def joinTags(tags: Seq[Tag]): String = {

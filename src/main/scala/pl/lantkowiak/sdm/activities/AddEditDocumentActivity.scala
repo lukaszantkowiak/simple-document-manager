@@ -14,7 +14,8 @@ import android.view.View
 import android.view.ViewGroup.LayoutParams.{MATCH_PARENT, WRAP_CONTENT}
 import android.widget._
 import com.getbase.floatingactionbutton.FloatingActionsMenu
-import pl.lantkowiak.sdm.core.dao.DocumentDao
+import pl.lantkowiak.sdm.core.dao.{FileDao, TagDao, DocumentTagDao, DocumentDao}
+import pl.lantkowiak.sdm.core.entity.Tag
 import pl.lantkowiak.sdm.di.ApplicationModule.wire
 import pl.lantkowiak.sdm.helper.{MessageMaker, ThumbnailGetter}
 
@@ -36,6 +37,9 @@ abstract class AddEditDocumentActivity extends AppCompatActivity {
   private lazy val thumbnailGetter = wire(classOf[ThumbnailGetter])
   protected lazy val messageMaker = wire(classOf[MessageMaker])
   protected lazy val documentDao = wire(classOf[DocumentDao])
+  protected lazy val documentTagDao = wire(classOf[DocumentTagDao])
+  protected lazy val tagDao = wire(classOf[TagDao])
+  protected lazy val fileDao = wire(classOf[FileDao])
 
   protected val files = new mutable.LinkedHashMap[String, File]
 

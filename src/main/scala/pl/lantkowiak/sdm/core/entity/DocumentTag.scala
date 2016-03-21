@@ -6,10 +6,12 @@ import com.j256.ormlite.table.DatabaseTable
 /**
  * @author Lukasz Antkowiak lukasz.patryk.antkowiak@gmail.com
  */
-@DatabaseTable(tableName = "tags")
-class Tag {
+@DatabaseTable(tableName = "documents_tags")
+class DocumentTag {
   @DatabaseField(generatedId = true)
   var id: Int = _
-  @DatabaseField(canBeNull = false)
-  var name: String = _
+  @DatabaseField(foreign = true)
+  var document: Document = _
+  @DatabaseField(foreign = true)
+  var tag: Tag = _
 }

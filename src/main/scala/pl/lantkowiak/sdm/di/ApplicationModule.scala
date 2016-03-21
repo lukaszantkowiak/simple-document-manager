@@ -1,7 +1,11 @@
 package pl.lantkowiak.sdm.di
 
+import java.io.File
+
 import android.util.Log
 import pl.lantkowiak.sdm.core.dao._
+import pl.lantkowiak.sdm.core.dao.db.OrmDatabaseHelper
+import pl.lantkowiak.sdm.core.entity.{Document, DocumentTag, Tag}
 import pl.lantkowiak.sdm.gui.DocumentItemCreator
 import pl.lantkowiak.sdm.helper.{MessageMaker, ThumbnailGetter, BitmapHelper}
 
@@ -19,6 +23,9 @@ object ApplicationModule {
     instances.put(classOf[MessageMaker], (messageMaker(), null))
     instances.put(classOf[ThumbnailGetter], (thumbnailGetter(), null))
     instances.put(classOf[TagDao], (tagDAO(), null))
+    instances.put(classOf[OrmDatabaseHelper], (ormDatabaseHelper(), null))
+    instances.put(classOf[DocumentTagDao], (documentTagDAO(), null))
+    instances.put(classOf[FileDao], (fileDAO(), null))
   }
 
   def wire[T](clazz: Class[T]): T = {
@@ -31,15 +38,28 @@ object ApplicationModule {
   }
 
   private def documentDAO(): () => DocumentDao = {
-    () => new DocumentDaoBean(ApplicationContext.getAppContext)
+    () => new DocumentDao(wire(classOf[OrmDatabaseHelper]).getDao(classOf[Document]))
   }
 
   private def tagDAO(): () => TagDao = {
-    () => new TagDaoBean(ApplicationContext.getAppContext)
+    () => new TagDao(wire(classOf[OrmDatabaseHelper]).getDao(classOf[Tag]))
+  }
+
+  private def documentTagDAO(): () => DocumentTagDao = {
+    () => new DocumentTagDao(wire(classOf[OrmDatabaseHelper]).getDao(classOf[DocumentTag]))
+  }
+
+  private def ormDatabaseHelper(): () => OrmDatabaseHelper = {
+    () => new OrmDatabaseHelper(ApplicationContext.getAppContext)
   }
 
   private def settingDAO(): () => SettingDao = {
     () => new SettingDaoBean()
+  }
+
+
+  private def fileDAO(): () => FileDao = {
+    () => new FileDao(new File(wire(classOf[SettingDao]).getAppPath))
   }
 
   private def documentItemCreator(): () => DocumentItemCreator = {

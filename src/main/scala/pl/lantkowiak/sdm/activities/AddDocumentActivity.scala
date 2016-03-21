@@ -1,13 +1,19 @@
 package pl.lantkowiak.sdm.activities
 
 import java.io.File
-import java.util.Calendar
+import java.util.{Arrays, Calendar}
 
 import android.os.Bundle
 import android.view.{Menu, MenuItem}
+import android.webkit.MimeTypeMap
 import android.widget.EditText
+import org.joda.time.DateTime
 import pl.lantkowiak.sdm.R
-import pl.lantkowiak.sdm.core.entity.{DocumentFile, Tag}
+import pl.lantkowiak.sdm.core.entity.{DocumentTag, Document, DocumentFile, Tag}
+import pl.lantkowiak.simpledocumentmanager.model.Document
+import pl.lantkowiak.simpledocumentmanager.model.DocumentFile
+import pl.lantkowiak.simpledocumentmanager.model.DocumentTag
+import pl.lantkowiak.simpledocumentmanager.model.Tag
 
 import scala.collection.mutable.ListBuffer
 
@@ -56,20 +62,58 @@ class AddDocumentActivity extends AddEditDocumentActivity {
     //      return false
     //    }
 
-    val preparedTags: Set[String] = unpreparedTags.split(" ").toSet
-
-    val tags = ListBuffer[Tag]()
-    preparedTags.foreach(t => tags.append(new Tag(t)))
-
     val now = Calendar.getInstance().getTime
-    val documentFiles = new ListBuffer[DocumentFile]
-    files.foreach((e: (String, File)) => documentFiles.append(new DocumentFile(now, e._1, getDescriptionForFile(e._1))))
 
-    val document = new pl.lantkowiak.sdm.core.entity.Document(title, Calendar.getInstance().getTime, tags)
-    document.documentFiles = documentFiles
+    val document: Document = new Document
+    document.title = title
+    document.createDate = now
 
     documentDao.persist(document)
 
+    val tagSet: Set[String] = unpreparedTags.split(" ").toSet
+    for (name <- tagSet) {
+      val tag: Tag = tagDao.createIfNotExistsAndGetTagByName(name)
+      persistDocumentTag(document, tag)
+    }
+
+    fileDao.storeFiles(document.id, files)
+
+    var index: Int = 1
+    import scala.collection.JavaConversions._
+    for (entry <- files.entrySet) {
+      val desc: String = getDescriptionForFile(entry.getKey)
+      persistDocumentFile(document, ({
+        index += 1;
+        index - 1
+      }), entry.getKey, entry.getValue.getPath, desc)
+    }
+    import scala.collection.JavaConversions._
+    for (file <- files.values) {
+      file.delete
+    }
+
+    finish()
+
     true
+  }
+
+  private def persistDocumentTag(document: Document, tag: Tag) {
+    val documentTag: DocumentTag = new DocumentTag
+    documentTag.document = document
+    documentTag.tag = tag
+    documentTagDao.persist(documentTag)
+  }
+
+  protected def persistDocumentFile(document: Document, order: Int, fileId: Long, path: String, description: String) {
+    val extension: String = MimeTypeMap.getFileExtensionFromUrl(path)
+    val mime: String = MimeTypeMap.getSingleton.getMimeTypeFromExtension(extension)
+    val documentFile: DocumentFile = new DocumentFile
+    documentFile.setDocument(document)
+    documentFile.setOrder(order)
+    documentFile.setFileId(fileId)
+    documentFile.setExtension(extension)
+    documentFile.setMime(mime)
+    documentFile.setDescription(description)
+    documentFileDao.persist(documentFile)
   }
 }
