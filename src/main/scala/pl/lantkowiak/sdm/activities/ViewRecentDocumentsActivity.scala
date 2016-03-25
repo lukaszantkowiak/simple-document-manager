@@ -14,6 +14,7 @@ import pl.lantkowiak.sdm.di.ApplicationModule.wire
 import pl.lantkowiak.sdm.gui.DocumentItemCreator
 
 import scala.collection.mutable.ListBuffer
+import scala.collection.JavaConversions._
 
 /**
  *
@@ -47,7 +48,8 @@ class ViewRecentDocumentsActivity extends DrawerMenuActivity {
     val documents = if (tags.isEmpty) documentDao.getAllDocuments else getDocumentsByTags(tags.split(" ").toList)
 
     for (document <- documents) {
-      val documentItemView = documentItemCreator.create(document.title, joinTags(document.tags))
+      val tags: List[Tag] = tagDao.getTagsById(document.tags.toList.map(_.tag.id))
+      val documentItemView = documentItemCreator.create(document.title, joinTags(tags))
       documentItemView.setOnClickListener(new OnClickListener {
         override def onClick(v: View): Unit = {
           val intent = new Intent(ViewRecentDocumentsActivity.this, null) // TODO: Show document activity
@@ -70,12 +72,12 @@ class ViewRecentDocumentsActivity extends DrawerMenuActivity {
     documentDao.getDocumentsByIds(documentIds)
   }
 
-  def joinTags(tags: Seq[Tag]): String = {
+  private def joinTags(tags: List[Tag]): String = {
     val joinedTags = new StringBuilder()
 
     tags.foreach(t => joinedTags.append(t.name).append(" "))
 
-    tags.toString().trim
+    joinedTags.toString().trim
   }
 
   def loadDocuments(view: View) {

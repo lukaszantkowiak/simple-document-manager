@@ -2,15 +2,18 @@ package pl.lantkowiak.sdm.core.dao
 
 import com.j256.ormlite.dao.{Dao, RuntimeExceptionDao}
 import pl.lantkowiak.sdm.core.entity.Tag
-import pl.lantkowiak.simpledocumentmanager.model.Tag
-import pl.lantkowiak.simpledocumentmanager.model.Tag
 
 import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 
 /**
  * @author Lukasz Antkowiak lukasz.patryk.antkowiak@gmail.com
  */
 class TagDao(val dao: Dao[Tag, Integer]) extends RuntimeExceptionDao[Tag, Integer](dao) {
+  def getTagsById(ids: List[Int]): List[Tag] = {
+    dao.queryBuilder.where().in("id", ids.asJava).query().toList
+  }
+
   def createIfNotExistsAndGetTagByName(name: String): Tag = {
     var tag: Tag = getTagByName(name)
     if (tag == null) {

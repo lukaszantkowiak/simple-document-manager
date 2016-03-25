@@ -22,4 +22,6 @@ class DocumentFile() {
   var mime: String = _
   @DatabaseField(canBeNull = false)
   var description: String = _
+  @DatabaseField(foreign = true, canBeNull = false)
+  var document: Document = _
 }

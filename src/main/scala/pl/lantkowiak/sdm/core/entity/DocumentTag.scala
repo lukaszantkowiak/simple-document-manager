@@ -10,8 +10,8 @@ import com.j256.ormlite.table.DatabaseTable
 class DocumentTag {
   @DatabaseField(generatedId = true)
   var id: Int = _
-  @DatabaseField(foreign = true)
+  @DatabaseField(foreign = true, canBeNull = false)
   var document: Document = _
-  @DatabaseField(foreign = true)
+  @DatabaseField(foreign = true, canBeNull = false)
   var tag: Tag = _
 }

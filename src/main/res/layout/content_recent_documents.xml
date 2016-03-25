@@ -88,57 +88,9 @@
             <LinearLayout
                 android:id="@+id/recent_documents_last_documents"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
 
-                <!-- one item -->
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/white_pressed"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp" >
-                    <TextView
-                        android:id="@+id/search2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.1"
-                        android:text="Sample title"
-                        android:textAppearance="?android:attr/textAppearanceLarge" />
-                    <TextView
-                        android:id="@+id/search3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.1"
-                        android:text="tags dsa fewf fweew fdsds fdsd"
-                        android:textAppearance="?android:attr/textAppearanceSmall" />
-                </LinearLayout>
-
-                <!-- one item -->
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/white_pressed"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp" >
-                    <TextView
-                        android:id="@+id/search22"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.1"
-                        android:text="Sample title"
-                        android:textAppearance="?android:attr/textAppearanceLarge" />
-                    <TextView
-                        android:id="@+id/search32"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.1"
-                        android:text="tags dsa fewf fweew fdsds fdsd"
-                        android:textAppearance="?android:attr/textAppearanceSmall" />
-                </LinearLayout>
-            </LinearLayout>
         </ScrollView>
     </LinearLayout>
 </RelativeLayout>

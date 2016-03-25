@@ -12,10 +12,11 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup.LayoutParams.{MATCH_PARENT, WRAP_CONTENT}
+import android.webkit.MimeTypeMap
 import android.widget._
 import com.getbase.floatingactionbutton.FloatingActionsMenu
-import pl.lantkowiak.sdm.core.dao.{FileDao, TagDao, DocumentTagDao, DocumentDao}
-import pl.lantkowiak.sdm.core.entity.Tag
+import pl.lantkowiak.sdm.core.dao._
+import pl.lantkowiak.sdm.core.entity.{DocumentFile, Document, Tag}
 import pl.lantkowiak.sdm.di.ApplicationModule.wire
 import pl.lantkowiak.sdm.helper.{MessageMaker, ThumbnailGetter}
 
@@ -40,6 +41,7 @@ abstract class AddEditDocumentActivity extends AppCompatActivity {
   protected lazy val documentTagDao = wire(classOf[DocumentTagDao])
   protected lazy val tagDao = wire(classOf[TagDao])
   protected lazy val fileDao = wire(classOf[FileDao])
+  protected lazy val documentFileDao = wire(classOf[DocumentFileDao])
 
   protected val files = new mutable.LinkedHashMap[String, File]
 
@@ -127,7 +129,7 @@ abstract class AddEditDocumentActivity extends AppCompatActivity {
         return null
       }
     }
-    fileId = System.currentTimeMillis + "" //TODO: change format
+    fileId = System.currentTimeMillis + "" //TODO: change filename
     new File(mediaStorageDir, File.separator + fileId + ".jpg")
   }
 
@@ -138,5 +140,17 @@ abstract class AddEditDocumentActivity extends AppCompatActivity {
 
   protected def getDescriptionForFile(fileId: String): String = {
     findViewById(fileId.hashCode).asInstanceOf[EditText].getText.toString
+  }
+
+  protected def persistDocumentFile(document: Document, fileName: String, path: String, description: String) {
+    val extension: String = MimeTypeMap.getFileExtensionFromUrl(path)
+    val mime: String = MimeTypeMap.getSingleton.getMimeTypeFromExtension(extension)
+    val documentFile: DocumentFile = new DocumentFile
+    documentFile.document = document
+    documentFile.fileName = fileName
+    documentFile.extension = extension
+    documentFile.mime = mime
+    documentFile.description = description
+    documentFileDao.persist(documentFile)
   }
 }
