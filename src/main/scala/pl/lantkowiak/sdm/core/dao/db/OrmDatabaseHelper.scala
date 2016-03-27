@@ -1,12 +1,12 @@
 package pl.lantkowiak.sdm.core.dao.db
 
 import android.content.Context
-import android.database.sqlite.{SQLiteDatabase, SQLiteOpenHelper}
+import android.database.sqlite.SQLiteDatabase
 import android.util.Log
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper
 import com.j256.ormlite.support.ConnectionSource
 import com.j256.ormlite.table.TableUtils
-import pl.lantkowiak.sdm.core.entity.{DocumentFile, DocumentTag, Document, Tag}
+import pl.lantkowiak.sdm.core.entity.{Document, DocumentFile, DocumentTag, Tag}
 
 /**
  * @author Lukasz Antkowiak lukasz.patryk.antkowiak@gmail.com

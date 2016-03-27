@@ -2,12 +2,11 @@ package pl.lantkowiak.sdm.di
 
 import java.io.File
 
-import android.util.Log
 import pl.lantkowiak.sdm.core.dao._
 import pl.lantkowiak.sdm.core.dao.db.OrmDatabaseHelper
-import pl.lantkowiak.sdm.core.entity.{DocumentFile, Document, DocumentTag, Tag}
+import pl.lantkowiak.sdm.core.entity.{Document, DocumentFile, DocumentTag, Tag}
 import pl.lantkowiak.sdm.gui.DocumentItemCreator
-import pl.lantkowiak.sdm.helper.{MessageMaker, ThumbnailGetter, BitmapHelper}
+import pl.lantkowiak.sdm.helper.{BitmapHelper, MessageMaker, ThumbnailGetter}
 
 /**
  * @author Lukasz Antkowiak lukasz.patryk.antkowiak@gmail.com

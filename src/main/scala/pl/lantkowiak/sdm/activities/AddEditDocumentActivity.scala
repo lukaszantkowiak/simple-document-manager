@@ -16,7 +16,7 @@ import android.webkit.MimeTypeMap
 import android.widget._
 import com.getbase.floatingactionbutton.FloatingActionsMenu
 import pl.lantkowiak.sdm.core.dao._
-import pl.lantkowiak.sdm.core.entity.{DocumentFile, Document, Tag}
+import pl.lantkowiak.sdm.core.entity.{Document, DocumentFile}
 import pl.lantkowiak.sdm.di.ApplicationModule.wire
 import pl.lantkowiak.sdm.helper.{MessageMaker, ThumbnailGetter}
 

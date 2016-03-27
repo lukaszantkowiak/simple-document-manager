@@ -24,7 +24,7 @@ class DocumentItemCreator(val context: Context) {
     titleTextView.setText(title)
     titleTextView.setTextAppearance(context, android.R.style.TextAppearance_Large)
     titleTextView.setLayoutParams(new TableLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT, 0.1f))
-    titleTextView.setBackgroundColor(Color.parseColor("#ff0000"))
+    titleTextView.setTextColor(Color.parseColor("#000000"))
     documentLayout.addView(titleTextView)
 
     val tagsTextView = new TextView(context)
@@ -32,6 +32,7 @@ class DocumentItemCreator(val context: Context) {
     tagsTextView.setTextColor(R.color.button_material_dark)
     tagsTextView.setTextAppearance(context, android.R.style.TextAppearance_Small)
     tagsTextView.setLayoutParams(new TableLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT, 0.1f))
+    tagsTextView.setTextColor(Color.parseColor("#000000"))
     documentLayout.addView(tagsTextView)
 
     documentLayout

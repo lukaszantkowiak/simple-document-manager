@@ -52,7 +52,7 @@ class ViewRecentDocumentsActivity extends DrawerMenuActivity {
       val documentItemView = documentItemCreator.create(document.title, joinTags(tags))
       documentItemView.setOnClickListener(new OnClickListener {
         override def onClick(v: View): Unit = {
-          val intent = new Intent(ViewRecentDocumentsActivity.this, null) // TODO: Show document activity
+          val intent = new Intent(ViewRecentDocumentsActivity.this, classOf[ShowDocumentActivity])
           intent.putExtra("documentId", document.id)
           startActivity(intent)
         }

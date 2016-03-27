@@ -9,7 +9,7 @@ import com.j256.ormlite.table.DatabaseTable
  * @author Lukasz Antkowiak lukasz.patryk.antkowiak@gmail.com
  */
 @DatabaseTable(tableName = "documentFiles")
-class DocumentFile() {
+class DocumentFile {
   @DatabaseField(generatedId = true)
   var id: Int = _
   @DatabaseField(canBeNull = false)

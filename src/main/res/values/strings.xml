@@ -18,4 +18,6 @@
     <string name="add_document_tags">Tags (separated by space):</string>
     <string name="add_document_title">Title:</string>
     <string name="add_document_add_button">Add</string>
+    <string name="save">Save</string>
+    <string name="edit">Edit</string>
 </resources>

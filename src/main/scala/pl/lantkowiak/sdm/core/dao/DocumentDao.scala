@@ -11,6 +11,10 @@ import scala.collection.mutable.ListBuffer
  * @author Lukasz Antkowiak lukasz.patryk.antkowiak@gmail.com
  */
 class DocumentDao(val dao: Dao[Document, Integer]) extends RuntimeExceptionDao[Document, Integer](dao) {
+  def getDocumentById(documentId: Int): Document = {
+    dao.queryForId(documentId)
+  }
+
   def persist(document: Document) = {
     dao.create(document)
   }

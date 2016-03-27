@@ -1,15 +1,13 @@
 package pl.lantkowiak.sdm.activities
 
 import java.io.File
-import java.util.{Arrays, Calendar}
+import java.util.Calendar
 
 import android.os.Bundle
 import android.view.{Menu, MenuItem}
 import android.widget.EditText
 import pl.lantkowiak.sdm.R
-import pl.lantkowiak.sdm.core.entity.{DocumentTag, Document, Tag}
-
-import scala.collection.mutable.ListBuffer
+import pl.lantkowiak.sdm.core.entity.{Document, DocumentTag, Tag}
 
 /**
  * @author Lukasz Antkowiak lukasz.patryk.antkowiak@gmail.com
@@ -51,10 +49,10 @@ class AddDocumentActivity extends AddEditDocumentActivity {
       return false
     }
 
-    if (images.getChildCount == 0) {
-      messageMaker.info("At least one file has to be added")
-      return false
-    }
+//    if (images.getChildCount == 0) {
+//      messageMaker.info("At least one file has to be added")
+//      return false
+//    }
 
     val now = Calendar.getInstance().getTime
 

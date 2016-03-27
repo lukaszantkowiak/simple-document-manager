@@ -9,7 +9,7 @@ import com.j256.ormlite.table.DatabaseTable
 @DatabaseTable(tableName = "tags")
 class Tag {
   @DatabaseField(generatedId = true)
-  var id: Int = 0
+  var id: Int = _
   @DatabaseField(canBeNull = false)
   var name: String = _
 }

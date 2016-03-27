@@ -17,8 +17,8 @@ class Document {
   var title: String = _
   @DatabaseField(canBeNull = false)
   var createDate: Date = _
-  @ForeignCollectionField(eager = true)
-  var tags: ForeignCollection[DocumentTag] = null
-
-  var documentFiles: Seq[DocumentFile] = _
+  @ForeignCollectionField(eager = false)
+  var tags: ForeignCollection[DocumentTag] = _
+  @ForeignCollectionField(eager = false)
+  var documentFiles: ForeignCollection[DocumentFile] = _
 }

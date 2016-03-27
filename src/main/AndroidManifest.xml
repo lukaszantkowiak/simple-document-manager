@@ -38,5 +38,21 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name="pl.lantkowiak.sdm.activities.ShowDocumentActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="pl.lantkowiak.sdm.activities.ViewRecentDocumentsActivity" />
+        </activity>
+        <activity
+            android:name="pl.lantkowiak.sdm.activities.EditDocumentActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="pl.lantkowiak.sdm.activities.ShowDocumentActivity" />
+        </activity>
     </application>
 </manifest>
