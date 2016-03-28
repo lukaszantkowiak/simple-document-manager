@@ -32,7 +32,7 @@ class DocumentItemCreator(val context: Context) {
     tagsTextView.setTextColor(R.color.button_material_dark)
     tagsTextView.setTextAppearance(context, android.R.style.TextAppearance_Small)
     tagsTextView.setLayoutParams(new TableLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT, 0.1f))
-    tagsTextView.setTextColor(Color.parseColor("#000000"))
+    tagsTextView.setTextColor(Color.parseColor("#646464"))
     documentLayout.addView(tagsTextView)
 
     documentLayout

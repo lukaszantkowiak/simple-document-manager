@@ -62,7 +62,7 @@ object ApplicationModule {
   }
 
   private def fileDAO(): () => FileDao = {
-    () => new FileDao(new File(wire(classOf[SettingDao]).getAppPath))
+    () => new FileDao(new File(ApplicationContext.getAppContext.getExternalFilesDir(null), wire(classOf[SettingDao]).getAppPath))
   }
 
   private def documentItemCreator(): () => DocumentItemCreator = {

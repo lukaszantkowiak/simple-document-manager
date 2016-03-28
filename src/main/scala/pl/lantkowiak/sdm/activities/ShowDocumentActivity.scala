@@ -73,7 +73,7 @@ class ShowDocumentActivity extends AppCompatActivity {
     val documentFiles: List[DocumentFile] = documentFileDao.getFilesByDocumentId(document.id)
     for (documentFile <- documentFiles) {
       val imageView: ImageView = new ImageView(this)
-      val file: File = fileDao.getFile(document.id, documentFile.fileName)
+      val file: File = fileDao.getFile(document.id, documentFile.fullFilename)
       val thumbnail: Bitmap = thumbnailGetter.getThumbnailForFile(file)
       imageView.setImageBitmap(thumbnail)
       imageView.setOnClickListener(new View.OnClickListener() {
@@ -86,7 +86,7 @@ class ShowDocumentActivity extends AppCompatActivity {
           }
           catch {
             case e: ActivityNotFoundException => {
-              val downloadFileDialog = new DownloadFileDialog(document.id, documentFile.fileName)
+              val downloadFileDialog = new DownloadFileDialog(document.id, documentFile.fullFilename)
               val builder: AlertDialog.Builder = new AlertDialog.Builder(ShowDocumentActivity.this)
               builder.setMessage("You do not have application to open this file. Do you want download this file to Download directory?").setPositiveButton("Yes", downloadFileDialog).setNegativeButton("No", downloadFileDialog).show
             }

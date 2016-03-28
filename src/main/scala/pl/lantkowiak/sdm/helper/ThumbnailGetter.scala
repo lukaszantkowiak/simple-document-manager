@@ -20,7 +20,10 @@ class ThumbnailGetter(val resources: Resources, val width: Int, val height: Int)
     val extension: String = MimeTypeMap.getFileExtensionFromUrl(file.getAbsolutePath)
     val mime: String = MimeTypeMap.getSingleton.getMimeTypeFromExtension(extension)
 
-    val bitmap: Bitmap = if (mime.startsWith("image/")) bitmapHelper.retrieveBitmapFromFile(file) else BitmapFactory.decodeResource(resources, R.drawable.abc_ic_star_black_36dp)
+    val bitmap: Bitmap = if (mime.startsWith("image/"))
+      bitmapHelper.retrieveBitmapFromFile(file)
+    else
+      BitmapFactory.decodeResource(resources, R.drawable.abc_ic_star_black_36dp)
 
     val isHorizontal: Boolean = bitmap.getWidth > bitmap.getHeight
     val width: Int = if (isHorizontal) this.width else this.height

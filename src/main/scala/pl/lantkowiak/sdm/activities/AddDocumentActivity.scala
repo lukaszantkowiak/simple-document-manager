@@ -49,10 +49,10 @@ class AddDocumentActivity extends AddEditDocumentActivity {
       return false
     }
 
-//    if (images.getChildCount == 0) {
-//      messageMaker.info("At least one file has to be added")
-//      return false
-//    }
+    if (images.getChildCount == 0) {
+      messageMaker.info("At least one file has to be added")
+      return false
+    }
 
     val now = Calendar.getInstance().getTime
 
@@ -71,7 +71,7 @@ class AddDocumentActivity extends AddEditDocumentActivity {
     fileDao.storeFiles(document.id, files)
 
     files.foreach((e: (String, File)) => {
-      persistDocumentFile(document, e._1, e._2.getPath, getDescriptionForFile(e._1))
+      persistDocumentFile(document, e._1, e._2.getPath, getDescriptionForFile(e._1), now)
       e._2.delete()
     })
 

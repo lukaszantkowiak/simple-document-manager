@@ -45,6 +45,7 @@ class FileDao(val root: File) {
 
     val downloadDir: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
     val dst: File = new File(downloadDir, src.getName)
+
     FileUtils.copyFile(src, dst)
   }
 }

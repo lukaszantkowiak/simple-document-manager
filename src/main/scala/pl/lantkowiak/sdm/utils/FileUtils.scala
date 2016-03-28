@@ -19,7 +19,7 @@ object FileUtils {
       inStream.close()
       outStream.close()
     } catch {
-      case e: Exception => Log.e(FileUtils.getClass.getSimpleName, e.getMessage)
+      case e: Exception => Log.e(FileUtils.getClass.getSimpleName, e.getMessage, e)
     }
   }
 

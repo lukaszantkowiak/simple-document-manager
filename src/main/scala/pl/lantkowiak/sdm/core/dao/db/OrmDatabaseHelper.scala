@@ -26,7 +26,7 @@ class OrmDatabaseHelper(val context: Context) extends OrmLiteSqliteOpenHelper(co
       TableUtils.dropTable(connectionSource, classOf[Tag], true)
       TableUtils.dropTable(connectionSource, classOf[Document], true)
     } catch {
-      case e: Exception => Log.e("Tables cannot be dropped!", e.getMessage)
+      case e: Exception => Log.e("Tables cannot be dropped!", e.getMessage, e)
     }
 
     onCreate(database, connectionSource)

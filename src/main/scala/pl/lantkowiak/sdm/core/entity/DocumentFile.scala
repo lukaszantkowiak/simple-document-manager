@@ -15,7 +15,7 @@ class DocumentFile {
   @DatabaseField(canBeNull = false)
   var createDate: Date = _
   @DatabaseField(canBeNull = false)
-  var fileName: String = _
+  var filename: String = _
   @DatabaseField(canBeNull = false)
   var extension: String = _
   @DatabaseField(canBeNull = false)
@@ -24,4 +24,8 @@ class DocumentFile {
   var description: String = _
   @DatabaseField(foreign = true, canBeNull = false)
   var document: Document = _
+  
+  def fullFilename : String = {
+    filename + "." + extension
+  }
 }

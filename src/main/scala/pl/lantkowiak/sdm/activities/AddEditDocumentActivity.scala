@@ -1,6 +1,7 @@
 package pl.lantkowiak.sdm.activities
 
 import java.io.File
+import java.util.Date
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
@@ -163,15 +164,16 @@ abstract class AddEditDocumentActivity extends AppCompatActivity {
     findViewById(fileId.hashCode).asInstanceOf[EditText].getText.toString
   }
 
-  protected def persistDocumentFile(document: Document, fileName: String, path: String, description: String) {
+  protected def persistDocumentFile(document: Document, fileName: String, path: String, description: String, createDate: Date) {
     val extension: String = MimeTypeMap.getFileExtensionFromUrl(path)
     val mime: String = MimeTypeMap.getSingleton.getMimeTypeFromExtension(extension)
     val documentFile: DocumentFile = new DocumentFile
     documentFile.document = document
-    documentFile.fileName = fileName
+    documentFile.filename = fileName
     documentFile.extension = extension
     documentFile.mime = mime
     documentFile.description = description
+    documentFile.createDate = createDate
     documentFileDao.persist(documentFile)
   }
 }
