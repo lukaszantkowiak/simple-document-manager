@@ -21,12 +21,12 @@ import scala.collection.JavaConversions._
   * @author Lukasz Antkowiak lukasz.patryk.antkowiak@gmail.com
  */
 class ShowDocumentActivity extends AppCompatActivity {
-  val documentDao = wire(classOf[DocumentDao])
-  val tagDao = wire(classOf[TagDao])
-  val documentFileDao = wire(classOf[DocumentFileDao])
-  val fileDao = wire(classOf[FileDao])
-  val thumbnailGetter = wire(classOf[ThumbnailGetter])
-  val messageMaker = wire(classOf[MessageMaker])
+  private lazy val documentDao = wire(classOf[DocumentDao])
+  private lazy val tagDao = wire(classOf[TagDao])
+  private lazy val documentFileDao = wire(classOf[DocumentFileDao])
+  private lazy val fileDao = wire(classOf[FileDao])
+  private lazy val thumbnailGetter = wire(classOf[ThumbnailGetter])
+  private lazy val messageMaker = wire(classOf[MessageMaker])
 
   var document: Document = _
 
@@ -119,8 +119,8 @@ class ShowDocumentActivity extends AppCompatActivity {
 }
 
 private class DownloadFileDialog(val documentId: Int, val filename: String) extends DialogInterface.OnClickListener {
-  private val fileDao: FileDao = wire(classOf[FileDao])
-  private val messageMaker: MessageMaker = wire(classOf[MessageMaker])
+  private lazy val fileDao: FileDao = wire(classOf[FileDao])
+  private lazy val messageMaker: MessageMaker = wire(classOf[MessageMaker])
 
   def onClick(dialog: DialogInterface, which: Int) {
     which match {

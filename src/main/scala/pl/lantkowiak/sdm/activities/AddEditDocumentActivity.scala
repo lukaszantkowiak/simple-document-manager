@@ -18,6 +18,7 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu
 import pl.lantkowiak.sdm.core.dao._
 import pl.lantkowiak.sdm.core.entity.{Document, DocumentFile}
 import pl.lantkowiak.sdm.di.ApplicationModule.wire
+import pl.lantkowiak.sdm.gui.{FileChooser, FileSelectedListener}
 import pl.lantkowiak.sdm.helper.{MessageMaker, ThumbnailGetter}
 
 import scala.collection.mutable
@@ -42,6 +43,7 @@ abstract class AddEditDocumentActivity extends AppCompatActivity {
   protected lazy val tagDao = wire(classOf[TagDao])
   protected lazy val fileDao = wire(classOf[FileDao])
   protected lazy val documentFileDao = wire(classOf[DocumentFileDao])
+  protected lazy val settingDao = wire(classOf[SettingDao])
 
   protected val files = new mutable.LinkedHashMap[String, File]
 
@@ -57,6 +59,9 @@ abstract class AddEditDocumentActivity extends AppCompatActivity {
     images = findViewById(getImages).asInstanceOf[TableLayout]
   }
 
+  /**
+   * Method call is defined in XML
+   */
   def takePhotoOnClickAction(view: View): Unit = {
     val intent: Intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
@@ -67,6 +72,22 @@ abstract class AddEditDocumentActivity extends AppCompatActivity {
 
     startActivityForResult(intent, takePhotoRequestCode)
 
+    collapseAddMenu()
+  }
+
+  /**
+   * Method call is defined in XML
+   */
+  def choseFileOnClickAction(view: View) {
+    val fileSelectedListener = new FileSelectedListener() {
+      def fileSelected(file: File) {
+        val thumbnail: Bitmap = thumbnailGetter.getThumbnailForFile(file)
+        fileId = file.getName
+        files.put(fileId, file)
+        images.addView(createTableRowWithPhoto(thumbnail, fileId, file.getName))
+      }
+    }
+    new FileChooser(this, fileSelectedListener, settingDao.getMaxFileSize, settingDao.getAllowedExtensions).showDialog()
     collapseAddMenu()
   }
 

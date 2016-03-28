@@ -14,7 +14,7 @@ import pl.lantkowiak.sdm.di.ApplicationModule.wire
  */
 class ThumbnailGetter(val resources: Resources, val width: Int, val height: Int) {
 
-  private val bitmapHelper = wire(classOf[BitmapHelper])
+  private lazy val bitmapHelper = wire(classOf[BitmapHelper])
 
   def getThumbnailForFile(file: File): Bitmap = {
     val extension: String = MimeTypeMap.getFileExtensionFromUrl(file.getAbsolutePath)
