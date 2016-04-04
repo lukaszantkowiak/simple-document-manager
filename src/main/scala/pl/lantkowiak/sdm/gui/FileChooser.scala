@@ -6,7 +6,6 @@ import android.app.{Activity, Dialog}
 import android.os.Environment
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.{View, ViewGroup}
-import android.webkit.MimeTypeMap
 import android.widget.{AdapterView, ArrayAdapter, ListView, TextView}
 import pl.lantkowiak.sdm.di.ApplicationModule.wire
 import pl.lantkowiak.sdm.helper.MessageMaker
@@ -15,13 +14,16 @@ import scala.collection.mutable.ArrayBuffer
 
 
 /**
+ * File Chooser implementation. It is based on https://rogerkeays.com/simple-android-file-chooser.
+ *
  * @author Lukasz Antkowiak lukasz.patryk.antkowiak@gmail.com
  */
-class FileChooser(val activity: Activity, val fileListener: FileSelectedListener, val maxFileSize: Double, val extensions: List[String]) {
+class FileChooser(val activity: Activity, val fileListener: FileSelectedListener, val maxFileSize: Double) {
+  private lazy val messageMaker = wire(classOf[MessageMaker])
   private val parentDir = ".."
+  private val mb = 1024.0 * 1024.0
   private val dialog = new Dialog(activity)
   private val list = new ListView(activity)
-  private lazy val messageMaker = wire(classOf[MessageMaker])
   private var currentPath: File = _
 
   list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -32,12 +34,9 @@ class FileChooser(val activity: Activity, val fileListener: FileSelectedListener
         refresh(chosenFile)
       }
       else {
-        val sizeInMB: Double = chosenFile.length / (1024.0 * 1024.0)
+        val sizeInMB: Double = chosenFile.length / mb
         if (sizeInMB > maxFileSize) {
           messageMaker.info("Selected file is too large")
-        }
-        else if (extensions != null && !extensions.contains(MimeTypeMap.getFileExtensionFromUrl(chosenFile.getAbsolutePath))) {
-          messageMaker.info("Selected file has not allowed extension")
         }
         else {
           if (fileListener != null) {

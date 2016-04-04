@@ -61,7 +61,7 @@ class ShowDocumentActivity extends AppCompatActivity {
   private def loadTags() {
     val sb = new StringBuilder
 
-    val tags: List[Tag] = tagDao.getTagsById(document.tags.map(t => t.tag.id).toList)
+    val tags: List[Tag] = tagDao.getTagsById(document.documentTags.map(t => t.tag.id).toList)
     tags.foreach(t => sb.append(t.name).append(" "))
 
     findViewById(R.id.show_document_tags).asInstanceOf[TextView].setText(sb.toString())

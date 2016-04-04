@@ -20,4 +20,8 @@
     <string name="add_document_add_button">Add</string>
     <string name="save">Save</string>
     <string name="edit">Edit</string>
+
+    <!-- Edit document -->
+    <string name="edit_document_tags">Tags (separated by space):</string>
+    <string name="edit_document_title">Title:</string>
 </resources>

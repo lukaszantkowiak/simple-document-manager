@@ -12,10 +12,6 @@ class SettingDaoBean extends SettingDao {
     (200, 150)
   }
 
-  override def getAllowedExtensions: List[String] = {
-    List("jpg", "jpeg", "png", "gif", "pdf", "doc", "docs", "xls", "xlsx", "ppt", "pptx", "txt")
-  }
-
   override def getMaxFileSize: Double = {
     5.0
   }

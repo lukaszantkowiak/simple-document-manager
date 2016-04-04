@@ -12,6 +12,8 @@ import pl.lantkowiak.sdm.helper.{BitmapHelper, MessageMaker, ThumbnailGetter}
  * @author Lukasz Antkowiak lukasz.patryk.antkowiak@gmail.com
  */
 object ApplicationModule {
+  private val context = ApplicationContext.getAppContext
+
   private val instances = collection.mutable.Map[Class[_], (()=>Any, Any)]()
 
   {
@@ -54,7 +56,7 @@ object ApplicationModule {
   }
 
   private def ormDatabaseHelper(): () => OrmDatabaseHelper = {
-    () => new OrmDatabaseHelper(ApplicationContext.getAppContext)
+    () => new OrmDatabaseHelper(context)
   }
 
   private def settingDAO(): () => SettingDao = {
@@ -62,11 +64,11 @@ object ApplicationModule {
   }
 
   private def fileDAO(): () => FileDao = {
-    () => new FileDao(new File(ApplicationContext.getAppContext.getExternalFilesDir(null), wire(classOf[SettingDao]).getAppPath))
+    () => new FileDao(new File(context.getExternalFilesDir(null), wire(classOf[SettingDao]).getAppPath))
   }
 
   private def documentItemCreator(): () => DocumentItemCreator = {
-    () => new DocumentItemCreator(ApplicationContext.getAppContext)
+    () => new DocumentItemCreator(context)
   }
 
   private def bitmapHelper(): () => BitmapHelper = {
@@ -76,10 +78,10 @@ object ApplicationModule {
   private def thumbnailGetter(): () => ThumbnailGetter = {
     () =>
       val resolution: (Int, Int) = wire(classOf[SettingDao]).getThumbnailResolution
-      new ThumbnailGetter(ApplicationContext.getAppContext.getResources, resolution._1, resolution._2)
+      new ThumbnailGetter(context.getResources, resolution._1, resolution._2)
   }
 
   private def messageMaker(): () => MessageMaker = {
-    () => new MessageMaker(ApplicationContext.getAppContext);
+    () => new MessageMaker(context);
   }
 }

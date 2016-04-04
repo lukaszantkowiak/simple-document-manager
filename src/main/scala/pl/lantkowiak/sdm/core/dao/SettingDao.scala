@@ -8,7 +8,5 @@ trait SettingDao {
 
   def getMaxFileSize: Double
 
-  def getAllowedExtensions: List[String]
-
   def getThumbnailResolution: (Int, Int)
 }

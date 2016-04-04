@@ -9,7 +9,11 @@ import scala.collection.JavaConverters._
 /**
  * @author Lukasz Antkowiak lukasz.patryk.antkowiak@gmail.com
  */
-class TagDao(val dao: Dao[Tag, Integer]) extends RuntimeExceptionDao[Tag, Integer](dao) {
+class TagDao(val dao: Dao[Tag, Int]) extends RuntimeExceptionDao[Tag, Int](dao) {
+  def getTagsByIds(tagIds: List[Int]) : List[Tag] = {
+    dao.queryBuilder.where().in("id", tagIds).query().toList
+  }
+
   def getTagsById(ids: List[Int]): List[Tag] = {
     dao.queryBuilder.where().in("id", ids.asJava).query().toList
   }
@@ -33,7 +37,7 @@ class TagDao(val dao: Dao[Tag, Integer]) extends RuntimeExceptionDao[Tag, Intege
     dao.queryBuilder.where.eq("name", name).queryForFirst
   }
 
-  def getTagsByNames(tagNames: List[String]): List[Tag] = {
+  def getTagsByNames(tagNames: Iterable[String]): List[Tag] = {
     dao.queryBuilder().where().in("name", tagNames).query().toList
   }
 }

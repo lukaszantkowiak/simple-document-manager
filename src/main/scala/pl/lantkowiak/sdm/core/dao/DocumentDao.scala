@@ -10,7 +10,7 @@ import scala.collection.mutable.ListBuffer
 /**
  * @author Lukasz Antkowiak lukasz.patryk.antkowiak@gmail.com
  */
-class DocumentDao(val dao: Dao[Document, Integer]) extends RuntimeExceptionDao[Document, Integer](dao) {
+class DocumentDao(val dao: Dao[Document, Int]) extends RuntimeExceptionDao[Document, Int](dao) {
   def getDocumentById(documentId: Int): Document = {
     dao.queryForId(documentId)
   }
@@ -20,7 +20,7 @@ class DocumentDao(val dao: Dao[Document, Integer]) extends RuntimeExceptionDao[D
   }
 
 
-  def getDocumentsByIds(documentIds: ListBuffer[Integer]): List[Document] = {
+  def getDocumentsByIds(documentIds: ListBuffer[Int]): List[Document] = {
     dao.queryBuilder.where().in("id", documentIds).query().toList
   }
 

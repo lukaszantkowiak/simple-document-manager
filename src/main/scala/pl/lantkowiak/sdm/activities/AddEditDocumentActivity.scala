@@ -37,7 +37,7 @@ abstract class AddEditDocumentActivity extends AppCompatActivity {
 
   protected var images: TableLayout = _
 
-  private lazy val thumbnailGetter = wire(classOf[ThumbnailGetter])
+  protected lazy val thumbnailGetter = wire(classOf[ThumbnailGetter])
   protected lazy val messageMaker = wire(classOf[MessageMaker])
   protected lazy val documentDao = wire(classOf[DocumentDao])
   protected lazy val documentTagDao = wire(classOf[DocumentTagDao])
@@ -88,7 +88,7 @@ abstract class AddEditDocumentActivity extends AppCompatActivity {
         images.addView(createTableRowWithPhoto(thumbnail, fileId, file.getName))
       }
     }
-    new FileChooser(this, fileSelectedListener, settingDao.getMaxFileSize, settingDao.getAllowedExtensions).showDialog()
+    new FileChooser(this, fileSelectedListener, settingDao.getMaxFileSize).showDialog()
     collapseAddMenu()
   }
 
@@ -113,6 +113,7 @@ abstract class AddEditDocumentActivity extends AppCompatActivity {
     val editText: EditText = new EditText(this)
     editText.setId(fileId.hashCode)
     editText.setText(description)
+    editText.setWidth(200)
     editText
   }
 
@@ -151,17 +152,16 @@ abstract class AddEditDocumentActivity extends AppCompatActivity {
         return null
       }
     }
-    fileId = System.currentTimeMillis + "" //TODO: change filename
+    fileId = System.currentTimeMillis.toString
     new File(mediaStorageDir, File.separator + fileId + ".jpg")
   }
 
   private def collapseAddMenu() {
-    val fam: FloatingActionsMenu = findViewById(getAddMenu).asInstanceOf[FloatingActionsMenu]
-    fam.collapse()
+    findViewById(getAddMenu).asInstanceOf[FloatingActionsMenu].collapse()
   }
 
   protected def getDescriptionForFile(fileId: String): String = {
-    findViewById(fileId.hashCode).asInstanceOf[EditText].getText.toString
+    findViewById(fileId.hashCode).asInstanceOf[EditText].getText.toString.trim
   }
 
   protected def persistDocumentFile(document: Document, fileName: String, path: String, description: String, createDate: Date) {
