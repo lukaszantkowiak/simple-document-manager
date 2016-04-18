@@ -40,19 +40,18 @@ class AddDocumentActivity extends AddEditDocumentActivity {
     val unpreparedTags = findViewById(R.id.add_document_tags).asInstanceOf[EditText].getText.toString.replaceAll("\\s+", " ")
     val title = findViewById(R.id.add_document_title).asInstanceOf[EditText].getText.toString
 
+    if (title isEmpty()) {
+      messageMaker.info("Title cannot be empy")
+      return false
+    }
     if (unpreparedTags isEmpty()) {
       messageMaker.info("At least one tag has to be added")
       return false
     }
-    if (title isEmpty()) {
-      messageMaker.info("At least one tag has to be added")
-      return false
-    }
-
-    if (images.getChildCount == 0) {
-      messageMaker.info("At least one file has to be added")
-      return false
-    }
+//    if (images.getChildCount == 0) {
+//      messageMaker.info("At least one file has to be added")
+//      return false
+//    }
 
     val now = Calendar.getInstance().getTime
 
@@ -70,8 +69,8 @@ class AddDocumentActivity extends AddEditDocumentActivity {
 
     fileDao.storeFiles(document.id, files)
 
-    files.foreach((e: (String, File)) => {
-      persistDocumentFile(document, e._1, e._2.getPath, getDescriptionForFile(e._1), now)
+    files.foreach((e: (Int, File)) => {
+      persistDocumentFile(document, e._1, e._2.getName, e._2.getPath, getDescriptionForFile(e._1), now)
       e._2.delete()
     })
 

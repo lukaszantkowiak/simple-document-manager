@@ -10,6 +10,6 @@ import com.j256.ormlite.table.DatabaseTable
 class Tag {
   @DatabaseField(generatedId = true)
   var id: Int = _
-  @DatabaseField(canBeNull = false)
+  @DatabaseField(canBeNull = false, unique = true)
   var name: String = _
 }

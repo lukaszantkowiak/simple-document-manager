@@ -1,11 +1,10 @@
 package pl.lantkowiak.sdm.core.dao
 
-import java.util
-
 import com.j256.ormlite.dao.{Dao, RuntimeExceptionDao}
 import pl.lantkowiak.sdm.core.entity.Document
+
 import scala.collection.JavaConversions._
-import scala.collection.mutable.ListBuffer
+import scala.collection.JavaConverters._
 
 /**
  * @author Lukasz Antkowiak lukasz.patryk.antkowiak@gmail.com
@@ -20,8 +19,8 @@ class DocumentDao(val dao: Dao[Document, Int]) extends RuntimeExceptionDao[Docum
   }
 
 
-  def getDocumentsByIds(documentIds: ListBuffer[Int]): List[Document] = {
-    dao.queryBuilder.where().in("id", documentIds).query().toList
+  def getDocumentsByIds(documentIds: Iterable[Int]): List[Document] = {
+    dao.queryBuilder.where().in("id", documentIds.asJava).query().toList
   }
 
   def getAllDocuments: List[Document] = {

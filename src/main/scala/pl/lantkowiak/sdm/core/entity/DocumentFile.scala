@@ -11,21 +11,27 @@ import com.j256.ormlite.table.DatabaseTable
 @DatabaseTable(tableName = "documentFiles")
 class DocumentFile {
   @DatabaseField(generatedId = true)
-  var id: Int = _
+  var id: Int = 0
   @DatabaseField(canBeNull = false)
   var createDate: Date = _
+  @DatabaseField(canBeNull = false)
+  var fileId: Int = 0
   @DatabaseField(canBeNull = false)
   var filename: String = _
   @DatabaseField(canBeNull = false)
   var extension: String = _
-  @DatabaseField(canBeNull = false)
+  @DatabaseField(canBeNull = true)
   var mime: String = _
   @DatabaseField(canBeNull = false)
   var description: String = _
   @DatabaseField(foreign = true, canBeNull = false)
   var document: Document = _
-  
+
   def fullFilename : String = {
     filename + "." + extension
+  }
+
+  def storeFilename : String = {
+    fileId + "." + extension
   }
 }

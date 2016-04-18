@@ -5,7 +5,7 @@ import java.util.Calendar
 
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.view.MenuItem
+import android.view.{Menu, MenuItem}
 import android.widget.{TextView, EditText}
 import com.google.common.base.Joiner
 import pl.lantkowiak.sdm.R
@@ -32,6 +32,11 @@ class EditDocumentActivity extends AddEditDocumentActivity {
     super.onCreate(savedInstanceState)
     documentId = getIntent.getIntExtra("documentId", -1)
     loadDocument()
+  }
+
+  override def onCreateOptionsMenu(menu: Menu): Boolean = {
+    getMenuInflater.inflate(R.menu.menu_edit_document, menu)
+    true
   }
 
   override def onOptionsItemSelected(item: MenuItem): Boolean = {
@@ -67,7 +72,7 @@ class EditDocumentActivity extends AddEditDocumentActivity {
       for ((df, f) <- documentFiles zip files) {
         val thumbnail: Bitmap = thumbnailGetter.getThumbnailForFile(f)
 
-        val fileId: String = df.filename
+        val fileId: Int = df.fileId
         this.files.put(fileId, f)
 
         images.addView(createTableRowWithPhoto(thumbnail, fileId, df.description))
@@ -79,17 +84,17 @@ class EditDocumentActivity extends AddEditDocumentActivity {
     val tags: String = findViewById(R.id.edit_document_tags).asInstanceOf[EditText].getText.toString
     val title: String = findViewById(R.id.edit_document_title).asInstanceOf[EditText].getText.toString.trim
     if (title.isEmpty) {
-      messageMaker.info("Title has to be added")
+      messageMaker.info("Title cannot be empty")
       return false
     }
     if (tags.isEmpty) {
       messageMaker.info("At least one tag has to be added")
       return false
     }
-    if (images.getChildCount == 0) {
-      messageMaker.info("At least one photo has to be added")
-      return false
-    }
+    //    if (images.getChildCount == 0) {
+    //      messageMaker.info("At least one file has to be added")
+    //      return false
+    //    }
     val document: Document = documentDao.getDocumentById(documentId)
     updateTitle(title, document)
     updateTags(tags, document)
@@ -107,24 +112,15 @@ class EditDocumentActivity extends AddEditDocumentActivity {
 
   private def updateFiles(document: Document) {
     val documentFiles: List[DocumentFile] = documentFileDao.getFilesByDocumentId(document.id)
-    val existingFiles = new ArrayBuffer[String]
+    val existingFiles = new ArrayBuffer[Int]
     val toRemove = new ArrayBuffer[DocumentFile]
     val toUpdate = new ArrayBuffer[DocumentFile]
-    for (documentFile <- documentFiles) {
-      if (!files.contains(documentFile.filename)) {
-        toRemove += documentFile
-      }
-      else {
-        existingFiles += documentFile.filename
-        toUpdate += documentFile
-      }
-    }
 
     documentFiles.foreach(df =>
-      if (!files.contains(df.filename)) {
+      if (!files.contains(df.fileId)) {
         toRemove += df
       } else {
-        existingFiles += df.filename
+        existingFiles += df.fileId
         toUpdate += df
       })
 
@@ -132,20 +128,18 @@ class EditDocumentActivity extends AddEditDocumentActivity {
     documentFileDao.remove(toRemove)
     fileDao.remove(toRemove)
     toUpdate.foreach(tu => {
-      val desc: String = getDescriptionForFile(tu.filename)
-      val order: Int = fileIds.indexOf(tu.filename)
-      if (!tu.description.equals(desc)) {
+      val desc: String = getDescriptionForFile(tu.fileId)
+      if (tu.description != desc) {
         tu.description = desc
         documentFileDao.update(tu)
       }
     })
 
-    files.foreach((e: (String, File)) => {
+    files.foreach((e: (Int, File)) => {
       if (!existingFiles.contains(e._1)) {
-        fileDao.storeFile(document.id, e._1, e._2)
-        val order: Int = fileIds.indexOf(e._1)
+        fileDao.storeFile(document.id, e._1.toString, e._2)
         val desc: String = getDescriptionForFile(e._1)
-        persistDocumentFile(document, e._1, e._2.getPath, desc, Calendar.getInstance().getTime)
+        persistDocumentFile(document, e._1, e._2.getName, e._2.getPath, desc, Calendar.getInstance().getTime)
         e._2.delete
       }
     })
@@ -168,7 +162,9 @@ class EditDocumentActivity extends AddEditDocumentActivity {
     val removedTags: mutable.LinkedHashSet[String] = new mutable.LinkedHashSet[String]()
     removedTags ++= tagSet
     removedTags --= editedTags
-    documentTagDao.removeByDocumentIdAndTagNames(document, tagDao.getTagsByNames(removedTags))
+    if (removedTags.nonEmpty) {
+      documentTagDao.removeByDocumentIdAndTagNames(document, tagDao.getTagsByNames(removedTags))
+    }
   }
 
   private def persistDocumentTag(document: Document, tag: Tag) {

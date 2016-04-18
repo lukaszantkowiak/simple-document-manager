@@ -18,7 +18,7 @@ import pl.lantkowiak.sdm.helper.{MessageMaker, ThumbnailGetter}
 import scala.collection.JavaConversions._
 
 /**
-  * @author Lukasz Antkowiak lukasz.patryk.antkowiak@gmail.com
+ * @author Lukasz Antkowiak lukasz.patryk.antkowiak@gmail.com
  */
 class ShowDocumentActivity extends AppCompatActivity {
   private lazy val documentDao = wire(classOf[DocumentDao])
@@ -48,7 +48,7 @@ class ShowDocumentActivity extends AppCompatActivity {
     true
   }
 
-  def loadDocument() = {
+  private def loadDocument() = {
     loadTitle()
     loadTags()
     loadFiles()
@@ -73,7 +73,7 @@ class ShowDocumentActivity extends AppCompatActivity {
     val documentFiles: List[DocumentFile] = documentFileDao.getFilesByDocumentId(document.id)
     for (documentFile <- documentFiles) {
       val imageView: ImageView = new ImageView(this)
-      val file: File = fileDao.getFile(document.id, documentFile.fullFilename)
+      val file: File = fileDao.getFile(document.id, documentFile.storeFilename)
       val thumbnail: Bitmap = thumbnailGetter.getThumbnailForFile(file)
       imageView.setImageBitmap(thumbnail)
       imageView.setOnClickListener(new View.OnClickListener() {
@@ -86,7 +86,7 @@ class ShowDocumentActivity extends AppCompatActivity {
           }
           catch {
             case e: ActivityNotFoundException => {
-              val downloadFileDialog = new DownloadFileDialog(document.id, documentFile.fullFilename)
+              val downloadFileDialog = new DownloadFileDialog(document.id, documentFile.storeFilename, documentFile.filename)
               val builder: AlertDialog.Builder = new AlertDialog.Builder(ShowDocumentActivity.this)
               builder.setMessage("You do not have application to open this file. Do you want download this file to Download directory?").setPositiveButton("Yes", downloadFileDialog).setNegativeButton("No", downloadFileDialog).show
             }
@@ -118,15 +118,26 @@ class ShowDocumentActivity extends AppCompatActivity {
   }
 }
 
-private class DownloadFileDialog(val documentId: Int, val filename: String) extends DialogInterface.OnClickListener {
+private class DownloadFileDialog(val documentId: Int, val storeFilename: String, val filename: String) extends DialogInterface.OnClickListener {
   private lazy val fileDao: FileDao = wire(classOf[FileDao])
   private lazy val messageMaker: MessageMaker = wire(classOf[MessageMaker])
 
   def onClick(dialog: DialogInterface, which: Int) {
     which match {
       case DialogInterface.BUTTON_POSITIVE =>
-        fileDao.copyFileToDownloadDir(documentId, filename)
+        // findFirstFreeName(filename) TODO: change store filename
+        fileDao.copyFileToDownloadDir(documentId, storeFilename, filename)
         messageMaker.info("File was copied to download directory")
+      case DialogInterface.BUTTON_NEGATIVE =>
     }
+  }
+
+  def findFirstFreeName(filename: String): String = {
+    var filenameToSave = filename
+    while (fileDao.fileExistsInDownloadDir(filename)) {
+      val i = filenameToSave.lastIndexOf('.')
+    }
+
+    filenameToSave
   }
 }

@@ -53,7 +53,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="text"
                         android:singleLine="true"
-                        android:textSize="12sp" />
+                        android:textSize="14sp" />
 
                     <Button
                         android:id="@+id/recent_documents_clear_search_tags"

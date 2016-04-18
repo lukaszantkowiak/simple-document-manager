@@ -31,7 +31,7 @@ abstract class AddEditDocumentActivity extends AppCompatActivity {
   protected val takePhotoRequestCode = 1432
 
 
-  protected var fileId: String = _
+  protected var fileId: Int = _
 
   protected var tempFile: File = _
 
@@ -46,7 +46,7 @@ abstract class AddEditDocumentActivity extends AppCompatActivity {
   protected lazy val documentFileDao = wire(classOf[DocumentFileDao])
   protected lazy val settingDao = wire(classOf[SettingDao])
 
-  protected val files = new mutable.LinkedHashMap[String, File]
+  protected val files = new mutable.LinkedHashMap[Int, File]
 
   protected def getImages: Int
 
@@ -83,7 +83,7 @@ abstract class AddEditDocumentActivity extends AppCompatActivity {
     val fileSelectedListener = new FileSelectedListener() {
       def fileSelected(file: File) {
         val thumbnail: Bitmap = thumbnailGetter.getThumbnailForFile(file)
-        fileId = file.getName
+        fileId = System.currentTimeMillis.toInt
         files.put(fileId, file)
         images.addView(createTableRowWithPhoto(thumbnail, fileId, file.getName))
       }
@@ -100,7 +100,7 @@ abstract class AddEditDocumentActivity extends AppCompatActivity {
     }
   }
 
-  protected def createTableRowWithPhoto(bitmap: Bitmap, fileId: String, description: String): TableRow = {
+  protected def createTableRowWithPhoto(bitmap: Bitmap, fileId: Int, description: String): TableRow = {
     val tr: TableRow = new TableRow(this)
     tr.setLayoutParams(new TableRow.LayoutParams(MATCH_PARENT, WRAP_CONTENT))
     tr.addView(createImageViewWithPhoto(bitmap))
@@ -109,9 +109,9 @@ abstract class AddEditDocumentActivity extends AppCompatActivity {
     tr
   }
 
-  private def createEditTextForDescription(fileId: String, description: String): EditText = {
+  private def createEditTextForDescription(fileId: Int, description: String): EditText = {
     val editText: EditText = new EditText(this)
-    editText.setId(fileId.hashCode)
+    editText.setId(fileId)
     editText.setText(description)
     editText.setWidth(200)
     editText
@@ -123,19 +123,19 @@ abstract class AddEditDocumentActivity extends AppCompatActivity {
     takenPhoto
   }
 
-  private def createDeletePhotoButton(id: String, tr: TableRow): ImageView = {
+  private def createDeletePhotoButton(fileId: Int, tr: TableRow): ImageView = {
     val deletePhoto: ImageView = new ImageView(this)
     deletePhoto.setImageResource(getResources.getIdentifier("@android:drawable/ic_delete", null, null))
     deletePhoto.setOnClickListener(new View.OnClickListener() {
       def onClick(v: View) {
-        removePhoto(id, tr)
+        removePhoto(fileId, tr)
       }
     })
     deletePhoto
   }
 
-  private def removePhoto(id: String, tr: TableRow) {
-    files.remove(id)
+  private def removePhoto(fileId: Int, tr: TableRow) {
+    files.remove(fileId)
     images.removeView(tr)
     messageMaker.info("Photo was removed")
   }
@@ -152,7 +152,7 @@ abstract class AddEditDocumentActivity extends AppCompatActivity {
         return null
       }
     }
-    fileId = System.currentTimeMillis.toString
+    fileId = System.currentTimeMillis.toInt
     new File(mediaStorageDir, File.separator + fileId + ".jpg")
   }
 
@@ -160,20 +160,23 @@ abstract class AddEditDocumentActivity extends AppCompatActivity {
     findViewById(getAddMenu).asInstanceOf[FloatingActionsMenu].collapse()
   }
 
-  protected def getDescriptionForFile(fileId: String): String = {
-    findViewById(fileId.hashCode).asInstanceOf[EditText].getText.toString.trim
+  protected def getDescriptionForFile(fileId: Int): String = {
+    val descriptionField: View = findViewById(fileId)
+    descriptionField.asInstanceOf[EditText].getText.toString.trim
   }
 
-  protected def persistDocumentFile(document: Document, fileName: String, path: String, description: String, createDate: Date) {
+  protected def persistDocumentFile(document: Document, fileId: Int, filename: String, path: String, description: String, createDate: Date) {
     val extension: String = MimeTypeMap.getFileExtensionFromUrl(path)
     val mime: String = MimeTypeMap.getSingleton.getMimeTypeFromExtension(extension)
     val documentFile: DocumentFile = new DocumentFile
     documentFile.document = document
-    documentFile.filename = fileName
+    documentFile.fileId = fileId
+    documentFile.filename = filename
     documentFile.extension = extension
     documentFile.mime = mime
     documentFile.description = description
     documentFile.createDate = createDate
+
     documentFileDao.persist(documentFile)
   }
 }

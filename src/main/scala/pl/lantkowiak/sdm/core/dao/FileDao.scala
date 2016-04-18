@@ -20,13 +20,13 @@ class FileDao(val root: File) {
 
   def getFiles(documentFiles: List[DocumentFile]): Iterable[File] = {
     val files: ArrayBuffer[File] = new ArrayBuffer[File]
-    documentFiles.foreach(df => files += getFile(df.document.id, df.fullFilename))
+    documentFiles.foreach(df => files += getFile(df.document.id, df.storeFilename))
 
     files
   }
 
-  def storeFiles(documentId: Int, files: mutable.LinkedHashMap[String, File]) = {
-    files.foreach((e: (String, File)) => storeFile(documentId, e._1, e._2))
+  def storeFiles(documentId: Int, files: mutable.LinkedHashMap[Int, File]) = {
+    files.foreach((e: (Int, File)) => storeFile(documentId, e._1.toString, e._2))
   }
 
   def storeFile(documentId: Int, fileName: String, file: File) = {
@@ -49,16 +49,16 @@ class FileDao(val root: File) {
     dir
   }
 
-  def copyFileToDownloadDir(documentId: Int, filename: String) = {
-    val src: File = getFile(documentId, filename)
+  def copyFileToDownloadDir(documentId: Int, storeFilename: String, saveFilename: String) = {
+    val src: File = getFile(documentId, storeFilename)
 
     val downloadDir: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-    val dst: File = new File(downloadDir, src.getName)
+    val dst: File = new File(downloadDir, saveFilename)
 
     FileUtils.copyFile(src, dst)
   }
 
-  def remove(toRemove: Seq[DocumentFile]) : Unit = {
+  def remove(toRemove: Seq[DocumentFile]): Unit = {
     toRemove.foreach(df => remove(df))
   }
 
@@ -66,5 +66,10 @@ class FileDao(val root: File) {
     val dir: File = createAndGetDocumentDir(documentFile.document.id)
     val file: File = new File(dir, documentFile.filename)
     file.delete
+  }
+
+  def fileExistsInDownloadDir(filename: String): Boolean = {
+    val downloadDir: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+    new File(downloadDir, filename).exists()
   }
 }

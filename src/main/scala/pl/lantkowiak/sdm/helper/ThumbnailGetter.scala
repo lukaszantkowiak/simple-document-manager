@@ -20,7 +20,7 @@ class ThumbnailGetter(val resources: Resources, val width: Int, val height: Int)
     val extension: String = MimeTypeMap.getFileExtensionFromUrl(file.getAbsolutePath)
     val mime: String = MimeTypeMap.getSingleton.getMimeTypeFromExtension(extension)
 
-    val bitmap: Bitmap = if (mime.startsWith("image/"))
+    val bitmap: Bitmap = if (mime != null && mime.startsWith("image/"))
       bitmapHelper.retrieveBitmapFromFile(file)
     else
       BitmapFactory.decodeResource(resources, R.drawable.abc_ic_star_black_36dp)
