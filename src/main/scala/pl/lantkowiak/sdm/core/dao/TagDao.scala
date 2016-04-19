@@ -14,10 +14,6 @@ class TagDao(val dao: Dao[Tag, Int]) extends RuntimeExceptionDao[Tag, Int](dao) 
     dao.queryBuilder.where().in("id", tagIds.asJava).query().toList
   }
 
-  def getTagsById(ids: List[Int]): List[Tag] = {
-    dao.queryBuilder.where().in("id", ids.asJava).query().toList
-  }
-
   def createIfNotExistsAndGetTagByName(name: String): Tag = {
     var tag: Tag = getTagByName(name)
     if (tag == null) {

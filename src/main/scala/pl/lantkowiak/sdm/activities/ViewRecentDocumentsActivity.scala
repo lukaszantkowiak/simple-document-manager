@@ -48,7 +48,7 @@ class ViewRecentDocumentsActivity extends DrawerMenuActivity {
     val documents = if (tags.isEmpty) documentDao.getAllDocuments else getDocumentsByTags(tags.split(" ").toList)
 
     documents.foreach(d => {
-      val tags: List[Tag] = tagDao.getTagsById(d.documentTags.toList.map(_.tag.id))
+      val tags: List[Tag] = tagDao.getTagsByIds(d.documentTags.toList.map(_.tag.id))
       val documentItemView = documentItemCreator.create(d.title, joinTags(tags))
       documentItemView.setOnClickListener(new OnClickListener {
         override def onClick(v: View): Unit = {

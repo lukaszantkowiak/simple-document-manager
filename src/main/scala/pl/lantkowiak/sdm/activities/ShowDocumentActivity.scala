@@ -2,6 +2,7 @@ package pl.lantkowiak.sdm.activities
 
 import java.io.File
 
+import android.app.Activity
 import android.content.{ActivityNotFoundException, DialogInterface, Intent}
 import android.graphics.Bitmap
 import android.net.Uri
@@ -9,7 +10,7 @@ import android.os.Bundle
 import android.support.v7.app.{AlertDialog, AppCompatActivity}
 import android.view.{Menu, MenuItem, View}
 import android.widget.{ImageView, LinearLayout, TextView}
-import pl.lantkowiak.sdm.R
+import pl.lantkowiak.sdm.{activities, R}
 import pl.lantkowiak.sdm.core.dao.{DocumentDao, DocumentFileDao, FileDao, TagDao}
 import pl.lantkowiak.sdm.core.entity.{Document, DocumentFile, Tag}
 import pl.lantkowiak.sdm.di.ApplicationModule.wire
@@ -61,7 +62,7 @@ class ShowDocumentActivity extends AppCompatActivity {
   private def loadTags() {
     val sb = new StringBuilder
 
-    val tags: List[Tag] = tagDao.getTagsById(document.documentTags.map(t => t.tag.id).toList)
+    val tags: List[Tag] = tagDao.getTagsByIds(document.documentTags.map(t => t.tag.id).toList)
     tags.foreach(t => sb.append(t.name).append(" "))
 
     findViewById(R.id.show_document_tags).asInstanceOf[TextView].setText(sb.toString())
@@ -76,23 +77,9 @@ class ShowDocumentActivity extends AppCompatActivity {
       val file: File = fileDao.getFile(document.id, documentFile.storeFilename)
       val thumbnail: Bitmap = thumbnailGetter.getThumbnailForFile(file)
       imageView.setImageBitmap(thumbnail)
-      imageView.setOnClickListener(new View.OnClickListener() {
-        def onClick(v: View) {
-          val intent: Intent = new Intent(Intent.ACTION_VIEW)
-          intent.setDataAndType(Uri.parse("file://" + file.getAbsolutePath), documentFile.mime)
-          intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-          try {
-            startActivity(intent)
-          }
-          catch {
-            case e: ActivityNotFoundException => {
-              val downloadFileDialog = new DownloadFileDialog(document.id, documentFile.storeFilename, documentFile.filename)
-              val builder: AlertDialog.Builder = new AlertDialog.Builder(ShowDocumentActivity.this)
-              builder.setMessage("You do not have application to open this file. Do you want download this file to Download directory?").setPositiveButton("Yes", downloadFileDialog).setNegativeButton("No", downloadFileDialog).show
-            }
-          }
-        }
-      })
+      val downloadFileDialog = new DownloadFileDialog(document.id, documentFile.storeFilename, documentFile.filename)
+      val fileActionClickListener = new FileActionClickListener(this, file.getAbsolutePath, documentFile.mime, downloadFileDialog)
+      imageView.setOnClickListener(fileActionClickListener)
       filesLayout.addView(imageView)
     }
   }
@@ -115,6 +102,23 @@ class ShowDocumentActivity extends AppCompatActivity {
     intent.putExtra("documentId", document.id)
     startActivity(intent)
     true
+  }
+}
+
+private class FileActionClickListener(val activity: Activity, val path: String, val mime: String, val downloadFileDialog: DownloadFileDialog) extends View.OnClickListener {
+  override def onClick(v: View): Unit = {
+    val intent: Intent = new Intent(Intent.ACTION_VIEW)
+    intent.setDataAndType(Uri.parse("file://" + path), mime)
+    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    try {
+      activity.startActivity(intent)
+    }
+    catch {
+      case e: ActivityNotFoundException => {
+        val builder: AlertDialog.Builder = new AlertDialog.Builder(activity)
+        builder.setMessage("You do not have application to open this file. Do you want download this file to Download directory?").setPositiveButton("Yes", downloadFileDialog).setNegativeButton("No", downloadFileDialog).show
+      }
+    }
   }
 }
 
