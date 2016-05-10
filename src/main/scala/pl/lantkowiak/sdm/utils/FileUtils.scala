@@ -11,10 +11,10 @@ import android.util.Log
 object FileUtils {
   def copyFile(src: File, dst: File) = {
     try {
-      val inStream: FileInputStream = new FileInputStream(src)
-      val outStream: FileOutputStream = new FileOutputStream(dst)
-      val inChannel: FileChannel = inStream.getChannel
-      val outChannel: FileChannel = outStream.getChannel
+      val inStream = new FileInputStream(src)
+      val outStream = new FileOutputStream(dst)
+      val inChannel = inStream.getChannel
+      val outChannel = outStream.getChannel
       inChannel.transferTo(0, inChannel.size, outChannel)
       inStream.close()
       outStream.close()

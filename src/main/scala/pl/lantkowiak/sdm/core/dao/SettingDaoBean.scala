@@ -9,7 +9,7 @@ class SettingDaoBean extends SettingDao {
   }
 
   override def getThumbnailResolution: (Int, Int) = {
-    (200, 150)
+    (100, 75)
   }
 
   override def getMaxFileSize: Double = {

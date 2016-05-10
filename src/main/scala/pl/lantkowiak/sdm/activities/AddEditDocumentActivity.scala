@@ -83,7 +83,8 @@ abstract class AddEditDocumentActivity extends AppCompatActivity {
     val fileSelectedListener = new FileSelectedListener() {
       def fileSelected(file: File) {
         val thumbnail: Bitmap = thumbnailGetter.getThumbnailForFile(file)
-        fileId = System.currentTimeMillis.toInt
+        fileId = generateFileId
+        Log.e("choseFileOnClickAction", fileId.toString)
         files.put(fileId, file)
         images.addView(createTableRowWithPhoto(thumbnail, fileId, file.getName))
       }
@@ -96,6 +97,7 @@ abstract class AddEditDocumentActivity extends AppCompatActivity {
     if (requestCode == takePhotoRequestCode && resultCode == RESULT_OK) {
       val thumbnail: Bitmap = thumbnailGetter.getThumbnailForFile(this.tempFile)
       files.put(fileId, tempFile)
+      Log.e("choseFileOnClickAction", fileId.toString)
       images.addView(createTableRowWithPhoto(thumbnail, fileId, ""))
     }
   }
@@ -152,7 +154,7 @@ abstract class AddEditDocumentActivity extends AppCompatActivity {
         return null
       }
     }
-    fileId = System.currentTimeMillis.toInt
+    fileId = generateFileId
     new File(mediaStorageDir, File.separator + fileId + ".jpg")
   }
 
@@ -161,8 +163,9 @@ abstract class AddEditDocumentActivity extends AppCompatActivity {
   }
 
   protected def getDescriptionForFile(fileId: Int): String = {
-    val descriptionField: View = findViewById(fileId)
-    descriptionField.asInstanceOf[EditText].getText.toString.trim
+    Log.e("fileId", fileId + "")
+    val descriptionField = findViewById(fileId).asInstanceOf[EditText]
+    descriptionField.getText.toString.trim
   }
 
   protected def persistDocumentFile(document: Document, fileId: Int, filename: String, path: String, description: String, createDate: Date) {
@@ -178,5 +181,9 @@ abstract class AddEditDocumentActivity extends AppCompatActivity {
     documentFile.createDate = createDate
 
     documentFileDao.persist(documentFile)
+  }
+
+  private def generateFileId() : Int = {
+    math.abs(System.currentTimeMillis.toInt)
   }
 }

@@ -1,16 +1,15 @@
 package pl.lantkowiak.sdm.activities
 
-import java.io.File
-
 import android.app.Activity
 import android.content.{ActivityNotFoundException, DialogInterface, Intent}
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.{AlertDialog, AppCompatActivity}
-import android.view.{Menu, MenuItem, View}
-import android.widget.{ImageView, LinearLayout, TextView}
-import pl.lantkowiak.sdm.{activities, R}
+import android.util.Log
+import android.view.ViewGroup.LayoutParams.{MATCH_PARENT, WRAP_CONTENT}
+import android.view.{Gravity, Menu, MenuItem, View}
+import android.widget._
+import pl.lantkowiak.sdm.R
 import pl.lantkowiak.sdm.core.dao.{DocumentDao, DocumentFileDao, FileDao, TagDao}
 import pl.lantkowiak.sdm.core.entity.{Document, DocumentFile, Tag}
 import pl.lantkowiak.sdm.di.ApplicationModule.wire
@@ -69,19 +68,45 @@ class ShowDocumentActivity extends AppCompatActivity {
   }
 
   private def loadFiles() {
-    val filesLayout: LinearLayout = findViewById(R.id.show_document_files).asInstanceOf[LinearLayout]
+    val filesLayout = findViewById(R.id.show_document_files_table).asInstanceOf[TableLayout]
     filesLayout.removeAllViews()
     val documentFiles: List[DocumentFile] = documentFileDao.getFilesByDocumentId(document.id)
+    Log.e("filesLayout.size1", filesLayout.getChildCount.toString)
     for (documentFile <- documentFiles) {
+      val scale = this.getResources.getDisplayMetrics.density
+      val dim110 = (100 * scale + 0.5f).toInt
+
+      val tableRow = new TableRow(this)
+      tableRow.setLayoutParams(new TableLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT))
+
+      val imageFrameLayout = new FrameLayout(this)
+      imageFrameLayout.setLayoutParams(new TableRow.LayoutParams(dim110, dim110))
+
       val imageView: ImageView = new ImageView(this)
-      val file: File = fileDao.getFile(document.id, documentFile.storeFilename)
-      val thumbnail: Bitmap = thumbnailGetter.getThumbnailForFile(file)
+      val file = fileDao.getFile(document.id, documentFile.storeFilename)
+      val thumbnail = thumbnailGetter.getThumbnailForFile(file)
       imageView.setImageBitmap(thumbnail)
       val downloadFileDialog = new DownloadFileDialog(document.id, documentFile.storeFilename, documentFile.filename)
       val fileActionClickListener = new FileActionClickListener(this, file.getAbsolutePath, documentFile.mime, downloadFileDialog)
       imageView.setOnClickListener(fileActionClickListener)
-      filesLayout.addView(imageView)
+      val layoutParams = new FrameLayout.LayoutParams(thumbnail.getWidth, thumbnail.getHeight)
+      layoutParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL
+      imageView.setLayoutParams(layoutParams)
+
+      imageFrameLayout.addView(imageView)
+
+      tableRow.addView(imageFrameLayout)
+
+      val fileDescription = new TextView(this)
+      fileDescription.setLayoutParams(new TableRow.LayoutParams(WRAP_CONTENT, dim110, 0.1f))
+      fileDescription.setText(documentFile.description)
+
+      tableRow.addView(fileDescription)
+
+      filesLayout.addView(tableRow)
     }
+
+    Log.e("filesLayout.size2", filesLayout.getChildCount.toString)
   }
 
   private def getDocument: Document = {
@@ -136,7 +161,7 @@ private class DownloadFileDialog(val documentId: Int, val storeFilename: String,
     }
   }
 
-  def findFirstFreeName(filename: String): String = {
+  private def findFirstFreeName(filename: String): String = {
     var filenameToSave = filename
     while (fileDao.fileExistsInDownloadDir(filename)) {
       val i = filenameToSave.lastIndexOf('.')

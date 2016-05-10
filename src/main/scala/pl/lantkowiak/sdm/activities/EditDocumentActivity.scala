@@ -7,7 +7,6 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.{Menu, MenuItem}
 import android.widget.{TextView, EditText}
-import com.google.common.base.Joiner
 import pl.lantkowiak.sdm.R
 import pl.lantkowiak.sdm.core.entity.{DocumentTag, Tag, Document, DocumentFile}
 
@@ -63,7 +62,7 @@ class EditDocumentActivity extends AddEditDocumentActivity {
   }
 
   private def loadTags(tags: List[Tag]) {
-    val preparedTags: String = Joiner.on(' ').join(tags.map(t => t.name))
+    val preparedTags: String = tags.map(t => t.name).mkString(", ")
     findViewById(R.id.edit_document_tags).asInstanceOf[TextView].setText(preparedTags)
   }
 
