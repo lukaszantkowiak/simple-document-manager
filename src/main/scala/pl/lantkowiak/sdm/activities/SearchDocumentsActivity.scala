@@ -45,13 +45,13 @@ class SearchDocumentsActivity extends DrawerMenuActivity {
 
   override protected def onCreateDialog(id: Int): Dialog = {
     if (id == datePickerCode) {
-      return new DatePickerDialog(this, new MyDateListener(findViewById(R.id.from_date).asInstanceOf[EditText]), 2015, 11, 12)
+      return new DatePickerDialog(this, new DateListener(findViewById(R.id.from_date).asInstanceOf[EditText]), 2015, 11, 12)
     }
     null
   }
 }
 
-class MyDateListener(editText: EditText) extends DatePickerDialog.OnDateSetListener {
+class DateListener(editText: EditText) extends DatePickerDialog.OnDateSetListener {
   override def onDateSet(view: DatePicker, year: Int, monthOfYear: Int, dayOfMonth: Int): Unit = {
     editText.setText(year + "-" + monthOfYear + "-" + dayOfMonth)
   }
