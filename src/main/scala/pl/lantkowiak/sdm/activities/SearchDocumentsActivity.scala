@@ -22,7 +22,7 @@ import pl.lantkowiak.sdm.R
  * @author Lukasz Antkowiak lukasz.patryk.antkowiak@gmail.com
  */
 class SearchDocumentsActivity extends DrawerMenuActivity {
-  private val datePickerCode = 1253;
+  private val datePickerCode = 1253
 
   override def onCreate(savedInstanceState: Bundle) {
     super.onCreate(savedInstanceState)
@@ -39,9 +39,7 @@ class SearchDocumentsActivity extends DrawerMenuActivity {
   override def contentId: Int = R.layout.activity_search_documents
 
   def datePicker(view: View): Unit = {
-    Log.e("as", view.getId.toString)
     showDialog(datePickerCode)
-    val fragment: DialogFragment = new DialogFragment()
   }
 
   override protected def onCreateDialog(id: Int): Dialog = {
