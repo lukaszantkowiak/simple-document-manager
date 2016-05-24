@@ -1,5 +1,6 @@
 package pl.lantkowiak.sdm.activities
 
+import java.util.Calendar
 import java.util.concurrent.{TimeUnit, Executors}
 
 import android.app.{DialogFragment, DatePickerDialog, Dialog, Activity}
@@ -45,7 +46,8 @@ class SearchDocumentsActivity extends DrawerMenuActivity {
 
   override protected def onCreateDialog(id: Int): Dialog = {
     if (id == datePickerCode) {
-      return new DatePickerDialog(this, new DateListener(findViewById(R.id.from_date).asInstanceOf[EditText]), 2015, 11, 12)
+      val now = Calendar.getInstance()
+      return new DatePickerDialog(this, new DateListener(findViewById(R.id.from_date).asInstanceOf[EditText]), now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH))
     }
     null
   }
