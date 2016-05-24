@@ -27,6 +27,22 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Search documents!" />
+            android:text="Search documents2!" />
+
+        <EditText android:id="@+id/from_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="form date" />
+
+        <Button
+            android:id="@+id/form_date_datepicker"
+            android:layout_width="15sp"
+            android:layout_height="15sp"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="5sp"
+            android:layout_marginRight="5sp"
+            android:background="@android:drawable/ic_menu_my_calendar"
+            android:onClick="datePicker" />
     </LinearLayout>
 </RelativeLayout>

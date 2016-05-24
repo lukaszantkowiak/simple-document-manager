@@ -8,6 +8,7 @@ import android.support.v7.app.{AlertDialog, AppCompatActivity}
 import android.util.Log
 import android.view.ViewGroup.LayoutParams.{MATCH_PARENT, WRAP_CONTENT}
 import android.view.{Gravity, Menu, MenuItem, View}
+import android.widget.TableRow.LayoutParams
 import android.widget._
 import pl.lantkowiak.sdm.R
 import pl.lantkowiak.sdm.core.dao.{DocumentDao, DocumentFileDao, FileDao, TagDao}
@@ -97,8 +98,11 @@ class ShowDocumentActivity extends AppCompatActivity {
 
       tableRow.addView(imageFrameLayout)
 
+
       val fileDescription = new TextView(this)
-      fileDescription.setLayoutParams(new TableRow.LayoutParams(WRAP_CONTENT, dim110, 0.1f))
+      val fileDescriptionParams: LayoutParams = new TableRow.LayoutParams(WRAP_CONTENT, dim110, 0.1f)
+      fileDescriptionParams.gravity = Gravity.CENTER_VERTICAL
+      fileDescription.setLayoutParams(fileDescriptionParams)
       fileDescription.setText(documentFile.description)
 
       tableRow.addView(fileDescription)

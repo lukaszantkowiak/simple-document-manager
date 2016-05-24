@@ -31,57 +31,7 @@
         <TableLayout
             android:id="@+id/show_document_files_table"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <FrameLayout
-                    android:layout_width="110dp"
-                    android:layout_height="110dp">
-
-                    <ImageView
-                        android:id="@+id/imageView2"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_gravity="center_horizontal|center_vertical"
-                        android:src="@android:drawable/ic_dialog_map" />
-                </FrameLayout>
-
-                <TextView
-                    android:id="@+id/textView22"
-                    android:layout_width="wrap_content"
-                    android:layout_height="110dp"
-                    android:scrollHorizontally="false"
-                    android:text="Sed tempus ex orci, sit amet pulvinar dolor dignissim eget." />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <FrameLayout
-                    android:layout_width="110dp"
-                    android:layout_height="110dp">
-
-                    <ImageView
-                        android:id="@+id/imageView21"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_gravity="center_horizontal|center_vertical"
-                        android:src="@android:drawable/ic_dialog_map" />
-                </FrameLayout>
-
-                <TextView
-                    android:id="@+id/textView221"
-                    android:layout_width="wrap_content"
-                    android:layout_height="110dp"
-                    android:scrollHorizontally="false"
-                    android:text="Ut ac libero tincidunt, bibendum sem nec, pellentesque sem." />
-            </TableRow>
-
-        </TableLayout>
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 </RelativeLayout>
